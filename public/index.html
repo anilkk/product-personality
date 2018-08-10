@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="theme-color" content="#000000">
+    <link rel="stylesheet" href="./bootstrap.min.css">
+    <link rel="stylesheet" href="./style.css">
+    <title>Instant search</title>
+</head>
+<body>
+<noscript>
+    You need to enable JavaScript to run this app.
+</noscript>
+<div>
+    <form id="form">
+        <fieldset>
+            <label for="person">
+                If you were a person out there in the world serving your customer , what is our job would be?
+                <i>Example: Netflix, Movies librarian</i>
+            </label>
+            <input type="text" name="person" id="person" required cf-questions="If you were a person out there in the world serving your customer , what is your job would be? Example: for Netflix, it would Movies librarian">
+        </fieldset>
+        <fieldset>
+            <label for="positive">Customer would describe us as the most?</label>
+            <input type="text" name="positive" id="positive" required cf-questions="Customer would describe you as the most? Example: for Netflix, it would Savvy">
+        </fieldset>
+        <fieldset>
+            <label for="negative">You never want to come off as</label>
+            <input required cf-questions="You never want to come off as? Example: for Netflix, it would narrow" type="text" class="form-control" name="negative"
+                   id="negative"/>
+        </fieldset>
+        <button type="submit" class="btn btn-default">Submit</button>
+    </form>
+    <div id="cf-context" class="dark-theme" role="cf-context" cf-context></div>
+    <div id="my-story" class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <h1>Your Product Personality</h1>
+                <!--h2 for updating the story content-->
+                <h2></h2>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript"
+        src="./conversational-form.min.js"></script>
+<script src="./jquery-3.3.1.min.js"></script>
+<script>
+    $('#my-story').hide();
+    var dispatcher = new cf.EventDispatcher();
+    var microphoneInput = null;
+    window.cf.ConversationalForm.startTheConversation({
+        formEl: document.getElementById("form"),
+        context: document.getElementById("cf-context"),
+        eventDispatcher: dispatcher,
+        microphoneInput: microphoneInput,
+        userImage: "./2face.svg",
+        robotImage: "./1face.svg",
+        submitCallback: function(e) {
+            const formData = window.ConversationalForm.getFormData(true);
+           $('#form').hide();
+           $('#cf-context').hide();
+            $('#my-story h2').html('"If you were a person out there in the world serving your customer, ' +
+                'your job would be <b>' + formData.person + '</b>' +
+                '. And customer would describe you as the most <b> '  + formData.positive + '</b>' +
+                ' of any in that profession. You never want to come off as <b>' + formData.negative + '</b>".');
+            $('#my-story').show();
+        }
+    });
+</script>
+</body>
+</html>
